@@ -1,8 +1,12 @@
+"use client";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import NavBar from "@/components/NavBar";
+import { ToastContainer } from "react-toastify";
+import { checkIsPublicRoute } from "@/services/checkIsPublicRoute";
+import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,6 +27,7 @@ export default function RootLayout({
           <main className="flex container mx-auto min-h-screen flex-col items-center">
             <NavBar />
             {children}
+            <ToastContainer />
           </main>
         </Providers>
       </body>

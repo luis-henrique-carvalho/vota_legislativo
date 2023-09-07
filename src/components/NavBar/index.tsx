@@ -14,13 +14,14 @@ import {
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
+import authServices from "@/services/authServices";
 
 // Context
-import { useAuth } from "@/contexts/auth";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { signOut, user, isSigned } = useAuth();
+  const isSigned = true;
+  const { signOut } = authServices();
 
   const menuItemsSignIn = [
     { label: "Questões", link: "questions" },
