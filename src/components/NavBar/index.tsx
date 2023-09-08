@@ -15,25 +15,20 @@ import { ThemeSwitcher } from "../ThemeSwitcher";
 import { Button } from "@nextui-org/react";
 import Link from "next/link";
 import authServices from "@/services/authServices";
-
-// Context
+import { useUserContext } from "@/contexts/UserContext";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const isSigned = true;
+
   const { signOut } = authServices();
+  const { isSigned } = useUserContext();
 
   const menuItemsSignIn = [
     { label: "Questões", link: "questions" },
     { label: "Usuários", link: "users-list" },
-    { label: "Categorias", link: "category" },
-    { label: "Relatórios", link: "reports" },
   ];
 
-  const unauthenticatedMenuItems = [
-    { label: "Login", link: "login" },
-    { label: "Cadastro", link: "signup" },
-  ];
+  const unauthenticatedMenuItems = [{ label: "Login", link: "login" }];
 
   return (
     <Navbar
