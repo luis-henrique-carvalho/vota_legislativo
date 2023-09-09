@@ -16,13 +16,18 @@ import {
 import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { SessionData } from "@/models/Session";
-import { useRouter } from "next/router";
 import { useToastMessage } from "@/hooks/useToast";
 import { useProjectHooks } from "@/hooks/useProjectHook";
+import { AiFillFileAdd } from "react-icons/ai";
 
 type Props = {
   sessions: SessionData[];
   vereador_id: string;
+  handleCreateProject: React.Dispatch<
+    React.SetStateAction<{
+      projetos: any[];
+    }>
+  >;
 };
 
 const validationSchema = Yup.object({
@@ -31,15 +36,21 @@ const validationSchema = Yup.object({
   descricao: Yup.string().required("Descrição obrigatória"),
 });
 
-export default function ModalAddProject({ sessions, vereador_id }: Props) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+export default function ModalAddProject({
+  sessions,
+  vereador_id,
+
+  handleCreateProject,
+}: Props) {
+  const { createProject } = useProjectHooks();
   const { setToastMessage } = useToastMessage();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const sessionMap = sessions.map((session) => ({
     value: session.id,
     label: session.name,
   }));
-
-  const { createProject } = useProjectHooks();
 
   const initialSessions = [
     {
@@ -51,7 +62,11 @@ export default function ModalAddProject({ sessions, vereador_id }: Props) {
 
   const handleSubmit = async (values: any) => {
     try {
-      await createProject({ vereador_id, ...values });
+      const newProject = await createProject({ vereador_id, ...values });
+      handleCreateProject((state) => ({
+        ...state,
+        projetos: [...state.projetos, newProject],
+      }));
       setToastMessage("Projeto criado com sucesso", "success");
       onClose();
     } catch (error: any) {
@@ -62,7 +77,7 @@ export default function ModalAddProject({ sessions, vereador_id }: Props) {
 
   return (
     <>
-      <Button onClick={onOpen} color="primary">
+      <Button onClick={onOpen} color="primary" endContent={<AiFillFileAdd />}>
         Adicionar Projeto
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} placement="top-center">

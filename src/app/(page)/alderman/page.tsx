@@ -12,25 +12,28 @@ import { useSessionHooks } from "@/hooks/useSessionHooks";
 import { useProfilesHook } from "@/hooks/useProfilesHook";
 import { SessionData } from "@/models/Session";
 import AldermanImage from "@/assets/vereador.png";
+import { useProjectHooks } from "@/hooks/useProjectHook";
 
 const Page = () => {
+  const { user } = useUserContext();
+
+  const { getProfile } = useProfilesHook();
+  const { getSessions } = useSessionHooks();
+
   const [sessions, setSessions] = useState<SessionData[]>([]);
   const [profile, setProfile] = useState<{ projetos: any[] }>({ projetos: [] });
-  const { getProfile, loading: profileLoading } = useProfilesHook();
-  const { user } = useUserContext();
-  const { getSessions } = useSessionHooks();
 
   useEffect(() => {
     const fetchProfile = async () => {
       const fetchedProfile = await getProfile();
-      if (fetchedProfile) {
-        setProfile(fetchedProfile);
-      }
+      setProfile(fetchedProfile);
     };
-  
-    fetchProfile();
-  }, [profile]);
-  
+    if (!profile.projetos.length) {
+      fetchProfile();
+    }
+  }, [profile.projetos]);
+
+  // Segundo useEffect para buscar as sessões
   useEffect(() => {
     const fetchSessions = async () => {
       const fetchedSessions = await getSessions();
@@ -38,10 +41,9 @@ const Page = () => {
         setSessions(fetchedSessions);
       }
     };
-  
+
     fetchSessions();
   }, []);
-  
 
   return (
     <div className="flex flex-col  lg:flex-row items-center gap-10 px-6 w-full">
@@ -70,7 +72,11 @@ const Page = () => {
       <Card className="py-4 w-full lg:min-h-[550px]" shadow="sm" isHoverable>
         <CardHeader className="pY-2  px-4 flex-row justify-between items-center">
           <h2 className="text-large font-bold">Projetos</h2>
-          <ModalAddProject vereador_id={user?.id!} sessions={sessions} />
+          <ModalAddProject
+            handleCreateProject={setProfile}
+            vereador_id={user?.id!}
+            sessions={sessions}
+          />
         </CardHeader>
         <Divider />
         <CardBody className="overflow-visible items-center py-2">
