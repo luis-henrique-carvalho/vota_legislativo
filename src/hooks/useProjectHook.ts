@@ -21,7 +21,6 @@ export const useProjectHooks = () => {
         `Projeto ${resp.data.name} criado com sucesso`,
         "success"
       );
-
       return resp.data;
     } catch (error) {
       handleApiError(error);

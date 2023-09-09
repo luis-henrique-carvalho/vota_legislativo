@@ -13,12 +13,11 @@ import {
   ModalFooter,
 } from "@nextui-org/react";
 
-import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { SessionData } from "@/models/Session";
-import { useToastMessage } from "@/hooks/useToast";
 import { useProjectHooks } from "@/hooks/useProjectHook";
 import { AiFillFileAdd } from "react-icons/ai";
+import { addProjectSchema } from "@/models/Schema";
 
 type Props = {
   sessions: SessionData[];
@@ -30,20 +29,12 @@ type Props = {
   >;
 };
 
-const validationSchema = Yup.object({
-  name: Yup.string().required("Nome obrigatório"),
-  sessao_id: Yup.string().required("Nome da sessão obrigatória"),
-  descricao: Yup.string().required("Descrição obrigatória"),
-});
-
 export default function ModalAddProject({
   sessions,
   vereador_id,
-
   handleCreateProject,
 }: Props) {
   const { createProject } = useProjectHooks();
-  const { setToastMessage } = useToastMessage();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -61,18 +52,13 @@ export default function ModalAddProject({
   ];
 
   const handleSubmit = async (values: any) => {
-    try {
-      const newProject = await createProject({ vereador_id, ...values });
-      handleCreateProject((state) => ({
-        ...state,
-        projetos: [...state.projetos, newProject],
-      }));
-      setToastMessage("Projeto criado com sucesso", "success");
-      onClose();
-    } catch (error: any) {
-      console.error("Error creating project", error);
-      setToastMessage(error, "error");
-    }
+    const newProject = await createProject({ vereador_id, ...values });
+    handleCreateProject((state) => ({
+      ...state,
+      projetos: [...state.projetos, newProject],
+    }));
+
+    onClose();
   };
 
   return (
@@ -92,7 +78,7 @@ export default function ModalAddProject({
                 sessao_id: "",
                 descricao: "",
               }}
-              validationSchema={validationSchema}
+              validationSchema={addProjectSchema}
               onSubmit={async (values) => {
                 await handleSubmit(values);
               }}

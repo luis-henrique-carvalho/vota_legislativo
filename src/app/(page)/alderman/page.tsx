@@ -1,21 +1,28 @@
 "use client";
+// Flow
 import React, { useEffect, useState } from "react";
+// Component
 import Image from "next/image";
 import Link from "next/link";
-import { User as UserComponent } from "@nextui-org/user";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import ModalAddProject from "@/components/ModalAddProject";
+import { User as UserComponent } from "@nextui-org/user";
 import TableComponent from "@/components/TableComponent";
+import ModalEditUser from "./components/ModalEditUser";
+// Models
+import { SessionData } from "@/models/Session";
+//Context
 import { useUserContext } from "@/contexts/UserContext";
+// Hooks
+import { useProjectHooks } from "@/hooks/useProjectHook";
 import { useSessionHooks } from "@/hooks/useSessionHooks";
 import { useProfilesHook } from "@/hooks/useProfilesHook";
-import { SessionData } from "@/models/Session";
+// Assets
 import AldermanImage from "@/assets/vereador.png";
-import { useProjectHooks } from "@/hooks/useProjectHook";
 
 const Page = () => {
-  const { user } = useUserContext();
+  const { user, setUser } = useUserContext();
 
   const { getProfile } = useProfilesHook();
   const { getSessions } = useSessionHooks();
@@ -62,10 +69,8 @@ const Page = () => {
           <Image src={AldermanImage} priority alt="vereador" />
         </CardBody>
         <Divider />
-        <CardFooter className="flex flex-col">
-          <Link href={`/alderman/edit/${user?.id}`} className="text-primary">
-            Editar
-          </Link>
+        <CardFooter className="flex flex-row justify-center">
+          <ModalEditUser handleEditUser={setUser} />
         </CardFooter>
       </Card>
 
