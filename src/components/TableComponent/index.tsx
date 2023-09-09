@@ -12,6 +12,7 @@ import {
 import { Project } from "@/models/Projects";
 import { Pagination } from "@nextui-org/react";
 import RenderCell from "./RenderCell";
+import ModalAddProject from "@/components/ModalAddProject";
 
 interface Props {
   projects: Project[];
@@ -38,7 +39,7 @@ const columns = [
 
 export default function TableComponent({ projects }: Props) {
   const [page, setPage] = React.useState(1);
-  const rowsPerPage = 5;
+  const rowsPerPage = 4;
 
   const pages = Math.ceil(projects.length / rowsPerPage);
 
@@ -52,13 +53,17 @@ export default function TableComponent({ projects }: Props) {
   return (
     <Table
       aria-label="Example table with dynamic content"
+      isStriped
+      classNames={{
+        table: "min-h-[280px] ",
+      }}
       bottomContent={
         <div className="flex w-full justify-center">
           <Pagination
             isCompact
             showControls
             showShadow
-            color="secondary"
+            color="primary"
             page={page}
             total={pages}
             onChange={(page) => setPage(page)}
@@ -81,3 +86,4 @@ export default function TableComponent({ projects }: Props) {
     </Table>
   );
 }
+

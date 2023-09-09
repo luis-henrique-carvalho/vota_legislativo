@@ -12,11 +12,6 @@ import {
 } from "@nextui-org/react";
 import { SlOptionsVertical } from "react-icons/sl";
 
-const statusColorMap: Record<string, ChipProps["color"]> = {
-  active: "success",
-  paused: "danger",
-  vacation: "warning",
-};
 
 const RenderCell = ({ projects, columnKey }: any) => {
   const cellValue = projects[columnKey];
@@ -41,7 +36,7 @@ const RenderCell = ({ projects, columnKey }: any) => {
       );
     case "actions":
       return (
-        <div className="relative flex justify-end items-center gap-2">
+        <div className="relative flex justify-center items-center gap-2">
           <Dropdown>
             <DropdownTrigger>
               <Button isIconOnly size="sm" variant="light">
@@ -49,7 +44,7 @@ const RenderCell = ({ projects, columnKey }: any) => {
               </Button>
             </DropdownTrigger>
             <DropdownMenu>
-              <DropdownItem>View</DropdownItem>
+              <DropdownItem>Edit</DropdownItem>
               <DropdownItem>Edit</DropdownItem>
               <DropdownItem>Delete</DropdownItem>
             </DropdownMenu>
