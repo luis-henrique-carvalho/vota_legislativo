@@ -1,4 +1,3 @@
-"use client";
 import React, {
   createContext,
   PropsWithChildren,
@@ -10,20 +9,26 @@ import React, {
 import { User } from "../models/User";
 import Cookies from "js-cookie";
 
-interface userContexData {
+// Defina constantes para os nomes dos cookies
+const USER_COOKIE = "user";
+const TOKEN_COOKIE = "token";
+
+// Defina tipos para o contexto e os valores iniciais
+interface UserContextData {
   isSigned: boolean;
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
 
-const userContex = createContext<userContexData>({} as userContexData);
+const UserContext = createContext<UserContextData>({} as UserContextData);
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const cookieUser = Cookies.get("user");
-    const cookieToken = Cookies.get("token");
+    // Use as constantes de nomes de cookies
+    const cookieUser = Cookies.get(USER_COOKIE);
+    const cookieToken = Cookies.get(TOKEN_COOKIE);
    
     if (cookieUser && cookieToken) {
       setUser(JSON.parse(cookieUser));
@@ -31,7 +36,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, []);
   
   return (
-    <userContex.Provider
+    <UserContext.Provider
       value={{
         isSigned: Boolean(user),
         user,
@@ -39,12 +44,12 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
       }}
     >
       {children}
-    </userContex.Provider>
+    </UserContext.Provider>
   );
 };
 
 export function useUserContext() {
-  const context = useContext(userContex);
+  const context = useContext(UserContext);
 
   return context;
 }
