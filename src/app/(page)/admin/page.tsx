@@ -1,55 +1,44 @@
 "use client";
 // Flow
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 // Component
-import Image from "next/image";
-import Link from "next/link";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import ModalAddProject from "@/components/ModalAddProject";
 import { User as UserComponent } from "@nextui-org/user";
-import TableComponent from "@/components/TableComponent";
+import TableAldeman from "./components/TableAldeman";
+
 // Models
 import { SessionData } from "@/models/Session";
 //Context
 import { useUserContext } from "@/contexts/UserContext";
 // Hooks
-import { useProjectHooks } from "@/hooks/useProjectHook";
-import { useSessionHooks } from "@/hooks/useSessionHooks";
-import { useProfilesHook } from "@/hooks/useProfilesHook";
+import { useUserHook } from "@/hooks/useUserHook";
 // Assets
-import AldermanImage from "@/assets/vereador.png";
+import { User } from "@/models/User";
+import ModalAddAlderman from "./components/ModalAddAlderman";
 
 const Page = () => {
-  const { user, setUser } = useUserContext();
+  const { getUsers } = useUserHook();
+  const { user } = useUserContext();
 
-  const { getProfile } = useProfilesHook();
-  const { getSessions } = useSessionHooks();
-
-  const [sessions, setSessions] = useState<SessionData[]>([]);
-  const [profile, setProfile] = useState<{ projetos: any[] }>({ projetos: [] });
+  const [aldemans, setAldermans] = useState<User[]>([]);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const fetchedProfile = await getProfile();
-      setProfile(fetchedProfile);
-    };
-    if (!profile.projetos.length) {
-      fetchProfile();
-    }
-  }, [profile.projetos]);
-
-  // Segundo useEffect para buscar as sessões
-  useEffect(() => {
-    const fetchSessions = async () => {
-      const fetchedSessions = await getSessions();
-      if (fetchedSessions) {
-        setSessions(fetchedSessions);
+    const fetchUsers = async () => {
+      try {
+        const fetchedProfile = await getUsers();
+        setAldermans(fetchedProfile);
+      } catch (error: any) {
+        console.log(error);
       }
     };
 
-    fetchSessions();
-  }, []);
+    fetchUsers();
+  }, [aldemans.length]);
+
+
+  console.log(aldemans);
 
   return (
     <div className="flex flex-col  lg:flex-row items-center gap-10 px-6 w-full">
@@ -62,10 +51,15 @@ const Page = () => {
               src: "@/assets/vereador.png",
             }}
           />
+
+          <ModalAddAlderman
+            handleAddAalderman={setAldermans}
+
+          />
         </CardHeader>
         <Divider />
         <CardBody className="overflow-visible items-center py-2">
-          
+          <TableAldeman alderman={aldemans} />
         </CardBody>
         <Divider />
       </Card>

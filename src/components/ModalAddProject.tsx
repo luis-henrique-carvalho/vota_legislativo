@@ -13,11 +13,12 @@ import {
   ModalFooter,
 } from "@nextui-org/react";
 
+import * as Yup from "yup";
 import { Formik, Form } from "formik";
 import { SessionData } from "@/models/Session";
+import { useToastMessage } from "@/hooks/useToast";
 import { useProjectHooks } from "@/hooks/useProjectHook";
 import { AiFillFileAdd } from "react-icons/ai";
-import { addProjectSchema } from "@/models/Schema";
 
 type Props = {
   sessions: SessionData[];
@@ -29,9 +30,16 @@ type Props = {
   >;
 };
 
+const validationSchema = Yup.object({
+  name: Yup.string().required("Nome obrigatório"),
+  sessao_id: Yup.string().required("Nome da sessão obrigatória"),
+  descricao: Yup.string().required("Descrição obrigatória"),
+});
+
 export default function ModalAddProject({
   sessions,
   vereador_id,
+
   handleCreateProject,
 }: Props) {
   const { createProject } = useProjectHooks();
@@ -78,7 +86,7 @@ export default function ModalAddProject({
                 sessao_id: "",
                 descricao: "",
               }}
-              validationSchema={addProjectSchema}
+              validationSchema={validationSchema}
               onSubmit={async (values) => {
                 await handleSubmit(values);
               }}

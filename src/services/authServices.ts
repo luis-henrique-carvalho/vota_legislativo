@@ -18,13 +18,14 @@ const useSignIn = () => {
       const newUser: User = data.user;
 
       // Serializa o objeto de usuário para uma string JSON ao definir o cookie
-      Cookie.set("token", data.token);
-      Cookie.set("user", JSON.stringify(newUser));
-      
+
       api.defaults.headers["Authorization"] = `Bearer ${data.token}`;
 
       setUser(data.user);
       setToastMessage(`Bem vindo ${newUser.name}`, "success");
+
+      Cookie.set("token", data.token);
+      Cookie.set("user", JSON.stringify(newUser));
       router.push("/alderman");
     } catch (error: any) {
       setToastMessage(error.response.data.message, "error");

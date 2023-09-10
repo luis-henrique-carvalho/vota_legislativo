@@ -21,20 +21,20 @@ type MenuItem = {
 
 type MenuType = "navBar" | "navMenu";
 
+const menuItemsAdmin = [
+  { label: "Vereadores", link: "admin/alderman-list" },
+  { label: "Sessões", link: "admin/session-list" },
+];
+
+const menuItemsAlderman = [{ label: "Votação", link: "vote" }];
+
+const unauthenticatedMenuItems = [{ label: "Login", link: "login" }];
+
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { signOut } = authServices();
   const { isSigned, user } = useUserContext();
-
-  const menuItemsAdmin = [
-    { label: "Vereadores", link: "admin/alderman-list" },
-    { label: "Sessões", link: "admin/session-list" },
-  ];
-
-  const menuItemsAlderman = [{ label: "Votação", link: "vote" }];
-
-  const unauthenticatedMenuItems = [{ label: "Login", link: "login" }];
 
   const renderMenuItems = (items: MenuItem[], type: MenuType) =>
     items.map((item, index) =>

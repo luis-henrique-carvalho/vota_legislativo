@@ -30,9 +30,8 @@ export const useUserHook = () => {
 
   const getUsers = async () => {
     try {
-      const resp = await api.get("/users");
-      console.log(resp);
-      return resp.data;
+      const { data } = await api.get("/users");
+      return data;
     } catch (error) {
       handleApiError(error);
     }

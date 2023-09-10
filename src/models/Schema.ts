@@ -32,3 +32,19 @@ export const addProjectSchema = Yup.object({
   sessao_id: Yup.string().required("Nome da sessão obrigatória"),
   descricao: Yup.string().required("Descrição obrigatória"),
 });
+
+export const addAldermanSchema = Yup.object({
+  name: Yup.string().required("Nome obrigatório"),
+  email: Yup.string().email("E-mail inválido").required("E-mail obrigatório"),
+  funcao: Yup.string().required("Função obrigatória"),
+  tipo: Yup.string().required("Tipo obrigatório"),
+  data_nascimento: Yup.string().required("Data de Nascimento obrigatória"),
+  partido: Yup.string().required("Partido Político obrigatório"),
+  rg: Yup.string().required("RG obrigatório"),
+  cpf: Yup.string().required("CPF obrigatório"),
+  titulo_eleitor: Yup.string().required("Título Eleitor obrigatório"),
+  zona_titulo: Yup.string().required("Zona Eleitoral obrigatória"),
+  telefone: Yup.string().required("Telefone obrigatório"),
+  password: Yup.string().required("Senha obrigatória"),
+  escolaridade: Yup.string().required("Escolaridade obrigatória"),
+});

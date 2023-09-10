@@ -33,6 +33,23 @@ export interface UserLogin {
   password: string;
 }
 
+export const InitialRegisterAlderman: User = {
+  name: "",
+  email: "",
+  password: "",
+  funcao: "",
+  partido: "",
+  rg: "",
+  cpf: "",
+  titulo_eleitor: "",
+  zona_titulo: "",
+  telefone: "",
+  escolaridade: "",
+  data_expedicao_rg: "",
+  data_nascimento: "",
+  tipo: "",
+};
+
 export type AldermanFunctions =
   | ""
   | "Vereador"
