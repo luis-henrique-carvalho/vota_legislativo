@@ -13,6 +13,8 @@ export function middleware(request: NextRequest) {
   const aldermanUrl = new URL("/alderman", request.url);
   const adminUrl = new URL("/admin", request.url);
 
+  console.log(token);
+
   if (!token) {
     if (request.nextUrl.pathname === "/login") {
       return NextResponse.next();
@@ -43,5 +45,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/login", "/alderman/:path*"],
+  matcher: ["/", "/login", "/alderman/:path*", "/admin:path*"],
 };
