@@ -29,7 +29,7 @@ import {
 } from "@/models/User";
 
 type Props = {
-  handleAddAalderman: React.Dispatch<React.SetStateAction<User[]>>;
+  handleAddAalderman: React.Dispatch<React.SetStateAction<User[]>>
 };
 
 export default function ModalAddAlderman({ handleAddAalderman }: Props) {

@@ -12,9 +12,7 @@ export function middleware(request: NextRequest) {
   const loginUrl = new URL("/login", request.url);
   const aldermanUrl = new URL("/alderman", request.url);
   const adminUrl = new URL("/admin", request.url);
-
-  console.log(token);
-
+  
   if (!token) {
     if (request.nextUrl.pathname === "/login") {
       return NextResponse.next();

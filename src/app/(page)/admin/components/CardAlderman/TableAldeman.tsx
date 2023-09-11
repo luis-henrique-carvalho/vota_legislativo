@@ -48,7 +48,7 @@ const columns = [
   },
 ];
 
-export default function TableComponent({ alderman }: Props) {
+export default function TableAlderman({ alderman }: Props) {
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 4;
 
