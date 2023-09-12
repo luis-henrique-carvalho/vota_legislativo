@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 export const useServerHook = () => {
   const cookieUser = cookies();
-  const userCookie = cookieUser.get("user")
+  const userCookie = cookieUser.get("user");
   const user = JSON.parse(userCookie?.value!);
 
   // Obtém os dados dos vereadores
@@ -15,10 +15,23 @@ export const useServerHook = () => {
       });
       return data;
     } catch (error: any) {
-      console.error("Erro ao buscar dados:", error.message);
+      console.error("Erro ao buscar dados das sessões:", error.message);
       return null;
     }
   };
 
-  return { user, fetchData };
+  const getSessions = async () => {
+    try {
+      const userToken = cookieUser.get("token")?.value;
+      const { data } = await api.get("/session", {
+        headers: { Authorization: `Bearer ${userToken}` },
+      });
+      return data;
+    } catch (error: any) {
+      console.error("Erro ao buscar dados das sessões:", error.message);
+      return null;
+    }
+  };
+
+  return { user, fetchData, getSessions };
 };

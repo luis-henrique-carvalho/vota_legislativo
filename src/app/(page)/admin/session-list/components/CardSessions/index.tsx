@@ -5,34 +5,36 @@ import React from "react";
 import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import { User as UserComponent } from "@nextui-org/user";
-import ModalAddAlderman from "./ModalAddAlderman";
-import TableAlderman from "./TableAldeman";
+import ModalAddSession from "./ModalAddSession";
+import TableAlderman from "./TableSessions";
 // Models
 import { User } from "@/models/User";
-import { useUserHook } from "@/hooks/useUserHook";
+import { SessionData } from "@/models/Session";
+// Hooks
+import { useSessionHooks } from "@/hooks/useSessionHooks";
 
 interface Props {
   user: User;
-  aldermans: User[];
+  sessions: SessionData[];
 }
 
-const index = ({ aldermans, user }: Props) => {
-  const [stateAldermans, setStateAldermans] = React.useState<User[]>(aldermans);
+const CardSessions = ({ sessions, user }: Props) => {
+  const [stateSessions, setStateSessions] = React.useState<SessionData[]>(sessions);
 
-  const { getUsers } = useUserHook();
+  const { getSessions } = useSessionHooks();
 
   React.useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const fetchedProfile = await getUsers();
-        setStateAldermans(fetchedProfile);
+        const fetchedSessions = await getSessions();
+        setStateSessions(fetchedSessions);
       } catch (error: any) {
         console.log(error);
       }
     };
 
     fetchUsers();
-  }, [stateAldermans.length]);
+  }, [stateSessions.length]);
 
   return (
     <Card className="py-4 w-full lg:min-h-[550px]" shadow="sm" isHoverable>
@@ -44,16 +46,15 @@ const index = ({ aldermans, user }: Props) => {
             src: "@/assets/vereador.png",
           }}
         />
-
-        <ModalAddAlderman handleAddAalderman={setStateAldermans} />
+        <ModalAddSession handleAddSessions={setStateSessions} />
       </CardHeader>
       <Divider />
       <CardBody className="overflow-visible items-center py-2">
-        <TableAlderman alderman={aldermans} />
+        <TableAlderman sessions={stateSessions} />
       </CardBody>
       <Divider />
     </Card>
   );
 };
 
-export default index;
+export default CardSessions;

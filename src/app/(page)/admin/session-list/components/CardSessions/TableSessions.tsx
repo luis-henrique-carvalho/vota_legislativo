@@ -10,8 +10,6 @@ import {
   TableCell,
 } from "@nextui-org/table";
 
-import { User as UserComponent } from "@nextui-org/user";
-
 import {
   Button,
   Chip,
@@ -23,76 +21,65 @@ import {
 import { SlOptionsVertical } from "react-icons/sl";
 import { useProjectHooks } from "@/hooks/useProjectHook";
 import { Pagination, Spinner } from "@nextui-org/react";
-import { User } from "@/models/User";
+import { SessionData } from "@/models/Session";
 
 interface Props {
-  alderman: User[];
+  sessions: SessionData[];
 }
 
 const columns = [
   {
     key: "name",
-    label: "NOME",
+    label: "NOME DA SESSÃO",
   },
   {
-    key: "partido",
-    label: "PARTIDO",
+    key: "inicio",
+    label: "Inicio",
   },
-  // {
-  //   key: "status",
-  //   label: "STATUS",
-  // },
+  {
+    key: "quorum",
+    label: "QUORUM",
+  },
   {
     key: "actions",
     label: "AÇÕES",
   },
 ];
 
-export default function TableAlderman({ alderman }: Props) {
+export default function TableSessions({ sessions }: Props) {
   const [page, setPage] = React.useState(1);
   const rowsPerPage = 4;
 
-  const pages = Math.ceil(alderman.length / rowsPerPage);
+  const pages = Math.ceil(sessions.length / rowsPerPage);
 
   const items = React.useMemo(() => {
-    if (!Array.isArray(alderman)) {
+    if (!Array.isArray(sessions)) {
       return [];
     }
 
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return alderman.slice(start, end);
-  }, [page, alderman]);
+    return sessions.slice(start, end);
+  }, [page, sessions]);
 
   const { projectDelete } = useProjectHooks();
 
-  const renderCell = React.useCallback((alderman: any, columnKey: any) => {
-    const cellValue = alderman[columnKey];
+  const renderCell = React.useCallback((sessions: any, columnKey: any) => {
+    const cellValue = sessions[columnKey];
 
     switch (columnKey) {
       case "name":
-        return (
-          <>
-            <UserComponent
-              name={alderman?.name}
-              description={alderman?.tipo}
-              avatarProps={{
-                src: alderman.avatar_url,
-              }}
-              classNames={{
-                name: "break-normal",
-                description: "break-normal",
-              }}
-            />
-          </>
-        );
+        return <div>{sessions.name}</div>;
+
+      case "inicio":
+        return <div>{sessions.inicio}</div>;
 
       case "partido":
         return (
           <div className="flex flex-col">
             <p className="text-bold text-tiny capitalize text-default-400">
-              {alderman.partido}
+              {sessions.quorum}
             </p>
           </div>
         );

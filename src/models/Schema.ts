@@ -48,3 +48,9 @@ export const addAldermanSchema = Yup.object({
   password: Yup.string().required("Senha obrigatória"),
   escolaridade: Yup.string().required("Escolaridade obrigatória"),
 });
+
+export const sessionSchema = Yup.object({
+  name: Yup.string().required("Nome obrigatório"),
+  inicio: Yup.string().required("Data de Nascimento obrigatória"),
+  quorum: Yup.number().required("Quorum obrigatório"),
+});

@@ -22,7 +22,7 @@ type MenuItem = {
 type MenuType = "navBar" | "navMenu";
 
 const menuItemsAdmin = [
-  { label: "Vereadores", link: "admin/alderman-list" },
+  { label: "Vereadores", link: "admin/" },
   { label: "Sessões", link: "admin/session-list" },
 ];
 

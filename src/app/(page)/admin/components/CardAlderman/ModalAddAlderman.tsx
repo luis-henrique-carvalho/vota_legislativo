@@ -29,7 +29,7 @@ import {
 } from "@/models/User";
 
 type Props = {
-  handleAddAalderman: React.Dispatch<React.SetStateAction<User[]>>
+  handleAddAalderman: React.Dispatch<React.SetStateAction<User[]>>;
 };
 
 export default function ModalAddAlderman({ handleAddAalderman }: Props) {
@@ -56,13 +56,18 @@ export default function ModalAddAlderman({ handleAddAalderman }: Props) {
 
   return (
     <>
-      <Button onClick={onOpen} color="primary" endContent={<AiFillFileAdd />}>
+      <Button
+        onClick={onOpen}
+        className="max-w-[180px] md:max-w-none text-sm"
+        color="primary"
+        endContent={<AiFillFileAdd />}
+      >
         Adicionar Vereador
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} placement="top-center">
         <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">
-            Adicionar Projeto
+          <ModalHeader className="flex flex-col">
+            Adicionar Vereador
           </ModalHeader>
           <ModalBody>
             <Formik
