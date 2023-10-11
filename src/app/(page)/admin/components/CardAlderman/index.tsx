@@ -16,23 +16,27 @@ interface Props {
   aldermans: User[];
 }
 
-const index = ({ aldermans, user }: Props) => {
+const CardUser = ({ aldermans, user }: Props) => {
   const [stateAldermans, setStateAldermans] = React.useState<User[]>(aldermans);
 
   const { getUsers } = useUserHook();
 
-  React.useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const fetchedProfile = await getUsers();
-        setStateAldermans(fetchedProfile);
-      } catch (error: any) {
-        console.log(error);
-      }
-    };
+  const fetchUsers = async () => {
+    try {
+      const fetchedProfile = await getUsers();
+      setStateAldermans(fetchedProfile);
+    } catch (error: any) {
+      console.error("Invalid Users error", error.message);
+    }
+  };
 
+  React.useEffect(() => {
     fetchUsers();
   }, [stateAldermans.length]);
+
+  const handleAddAlderman = (newAlderman: User) => {
+    setStateAldermans((prevState) => [...prevState, newAlderman]);
+  };
 
   return (
     <Card className="py-4 w-full lg:min-h-[550px]" shadow="sm" isHoverable>
@@ -44,16 +48,18 @@ const index = ({ aldermans, user }: Props) => {
             src: "@/assets/vereador.png",
           }}
         />
-
-        <ModalAddAlderman handleAddAalderman={setStateAldermans} />
+        <h2 className="text-26 text-primary font-bold">Lista de Vereadores</h2>
+        <ModalAddAlderman handleAddAalderman={handleAddAlderman} />
       </CardHeader>
       <Divider />
       <CardBody className="overflow-visible items-center py-2">
-        <TableAlderman alderman={aldermans} />
+        <TableAlderman
+          alderman={aldermans}
+        />
       </CardBody>
       <Divider />
     </Card>
   );
 };
 
-export default index;
+export default CardUser;

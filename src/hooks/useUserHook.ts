@@ -24,6 +24,7 @@ export const useUserHook = () => {
       );
       return resp.data;
     } catch (error) {
+      console.error("failed to create user", error);
       handleApiError(error);
     }
   };
@@ -57,9 +58,9 @@ export const useUserHook = () => {
     }
   };
 
-  const editUser = async (user: User) => {
+  const editUser = async (user: User, id: string) => {
     try {
-      const resp = await api.put("/profile", user);
+      const resp = await api.put(`/profile/${id}`, user);
       setToastMessage(
         `Usuário ${resp.data.name} Editado com sucesso`,
         "success"

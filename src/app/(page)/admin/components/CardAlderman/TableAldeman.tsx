@@ -1,6 +1,7 @@
-// TableComponent.tsx
+// Flow
 "use client";
 import React from "react";
+// Component
 import {
   Table,
   TableHeader,
@@ -9,20 +10,10 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-
 import { User as UserComponent } from "@nextui-org/user";
-
-import {
-  Button,
-  Chip,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
-import { SlOptionsVertical } from "react-icons/sl";
-import { useProjectHooks } from "@/hooks/useProjectHook";
+import ViewModal from "@/components/ViewModal";
 import { Pagination, Spinner } from "@nextui-org/react";
+// Models
 import { User } from "@/models/User";
 
 interface Props {
@@ -38,24 +29,22 @@ const columns = [
     key: "partido",
     label: "PARTIDO",
   },
-  // {
-  //   key: "status",
-  //   label: "STATUS",
-  // },
   {
     key: "actions",
-    label: "AÇÕES",
+    label: "DETALHES",
   },
 ];
 
-export default function TableAlderman({ alderman }: Props) {
+export default function TableAlderman({
+  alderman,
+}: Props) {
   const [page, setPage] = React.useState(1);
-  const rowsPerPage = 4;
+  const rowsPerPage = 5;
 
   const pages = Math.ceil(alderman.length / rowsPerPage);
 
   const items = React.useMemo(() => {
-    if (!Array.isArray(alderman)) {
+    if (!alderman || !Array.isArray(alderman)) {
       return [];
     }
 
@@ -63,9 +52,7 @@ export default function TableAlderman({ alderman }: Props) {
     const end = start + rowsPerPage;
 
     return alderman.slice(start, end);
-  }, [page, alderman]);
-
-  const { projectDelete } = useProjectHooks();
+  }, [page, alderman, rowsPerPage]);
 
   const renderCell = React.useCallback((alderman: any, columnKey: any) => {
     const cellValue = alderman[columnKey];
@@ -98,21 +85,14 @@ export default function TableAlderman({ alderman }: Props) {
         );
       case "actions":
         return (
-          <div className="relative flex justify-center items-center gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <SlOptionsVertical />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem onClick={() => projectDelete("1")}>
-                  Edit
-                </DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+          <div className=" flex justify-center gap-2">
+            <ViewModal
+              buttonName="Ver usuário"
+              roteName="alderman"
+              titleModal={alderman.name}
+              values={alderman}
+              key={alderman.id}
+            />
           </div>
         );
       default:

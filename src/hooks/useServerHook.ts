@@ -7,7 +7,7 @@ export const useServerHook = () => {
   const user = JSON.parse(userCookie?.value!);
 
   // Obtém os dados dos vereadores
-  const fetchData = async () => {
+  const fetchUserData = async () => {
     try {
       const userToken = cookieUser.get("token")?.value;
       const { data } = await api.get("/users", {
@@ -33,5 +33,5 @@ export const useServerHook = () => {
     }
   };
 
-  return { user, fetchData, getSessions };
+  return { user, fetchUserData, getSessions };
 };
